@@ -1,17 +1,24 @@
-import useAuth from '../context/useAuth'
-import useAxiosPrivate from './useAxiosPrivate'
-import useFetchIntel from './useFetchIntel'
+import useAuth from '../context/useAuth';
+import useIntel from '../context/useIntel';
+import useWebSocket from '../context/useWebSocket';
 
 const useThrowCard = () => {
-    const axiosPrivate = useAxiosPrivate()
     const { auth: { uuid } } = useAuth()
-    const fetchIntelSince = useFetchIntel()
+    const { sendMessage } = useWebSocket()
+    const { intel } = useIntel()
 
     const throwCardAs = async (card, action) => {
         try {
-            const url = `/api/v1/games/players/${uuid}/cards/${action}`
-            await axiosPrivate.post(url, card)
-            fetchIntelSince()
+            const timestamp = intel.last.timestamp
+            const destination = `/api/v2/games/players/${uuid}/cards/${action}`;
+            const gameId = intel.last.gameId;
+            const body = { 
+                gameUuid: gameId, 
+                card: card, 
+                timestamp: timestamp 
+            };
+            console.log(body)
+            sendMessage(destination, body);
         }
         catch (error) {
             console.log(error.response.headers.authorization)

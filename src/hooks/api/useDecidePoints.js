@@ -1,17 +1,22 @@
 import useAuth from '../context/useAuth'
-import useAxiosPrivate from './useAxiosPrivate'
-import useFetchIntel from './useFetchIntel'
+import useIntel from '../context/useIntel'
+import useWebSocket from '../context/useWebSocket'
 
 const useDecidePoints = () => {
-    const axiosPrivate = useAxiosPrivate()
     const { auth: { uuid } } = useAuth()
-    const fetchIntelSince = useFetchIntel()
+    const { intel } = useIntel() 
+    const { sendMessage } = useWebSocket()
 
     const decideTo = async (action) => {
         try {
-            const url = `/api/v1/games/players/${uuid}/${action}`
-            await axiosPrivate.post(url)
-            fetchIntelSince()
+            const timestamp = intel.last.timestamp 
+            const destination = `/api/v2/games/players/${uuid}/${action}`;
+            const gameId = intel.last.gameId;
+            const body = { 
+                gameUuid: gameId, 
+                timestamp: timestamp
+            }
+            sendMessage(destination, body)
         }
         catch (error) {
             console.log(error.response.headers.authorization)

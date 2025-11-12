@@ -22,6 +22,7 @@ import PagesLayout from "./pages/main/PagesLayout";
 import TournamentConfig from "./pages/tournament/TournamentConfig";
 import Tournament from "./pages/tournament/Tournament";
 import TournamentPageLayout from "./pages/main/TournamentPageLayout";
+import { WebSocketContextProvider } from "./contexts/WebSocketContext";
 
 // TODO
 // 1. Solve opponent card showing covered before unveiled. X
@@ -35,37 +36,39 @@ import TournamentPageLayout from "./pages/main/TournamentPageLayout";
 const App = () => (
   <AuthContextProvider>
     <IntelContextProvider>
-      <TournamentProvider>
-        <EvaluationProvider>
-          <Routes>
-            <Route path="/" element={<Layout />}>
-              <Route path="login" element={<Authentication />} />
-              <Route path="register" element={<Registration />} />
-              <Route element={<RequireAuth />}>
-                <Route element={<PagesLayout />}>
-                  <Route index element={<Home />} />
-                  <Route path="add-remote" element={<RemoteBotsMenu />} />
-                  <Route path="mat/start-game" element={<StartGameMat />} />
-                  <Route path="mat/game" element={<Mat />} />
-                  <Route path="evaluate-bot" element={<EvaluateBot />} />
-                  <Route path="user-history" element={<UserMatchHistory />} />
-                  <Route path="hall-of-fame" element={<RankBots />} />
-                  <Route path="top-winners" element={<TopWinners />} />
-                  <Route path="simulate-bots" element={<ConfigSimulation />} />
-                  <Route
-                    path="tournament/config"
-                    element={<TournamentConfig />}
-                  />
+      <WebSocketContextProvider>
+        <TournamentProvider>
+          <EvaluationProvider>
+            <Routes>
+              <Route path="/" element={<Layout />}>
+                <Route path="login" element={<Authentication />} />
+                <Route path="register" element={<Registration />} />
+                <Route element={<RequireAuth />}>
+                  <Route element={<PagesLayout />}>
+                    <Route index element={<Home />} />
+                    <Route path="add-remote" element={<RemoteBotsMenu />} />
+                    <Route path="mat/start-game" element={<StartGameMat />} />
+                    <Route path="mat/game" element={<Mat />} />
+                    <Route path="evaluate-bot" element={<EvaluateBot />} />
+                    <Route path="user-history" element={<UserMatchHistory />} />
+                    <Route path="hall-of-fame" element={<RankBots />} />
+                    <Route path="top-winners" element={<TopWinners />} />
+                    <Route path="simulate-bots" element={<ConfigSimulation />} />
+                    <Route
+                      path="tournament/config"
+                      element={<TournamentConfig />}
+                    />
+                  </Route>
+                  <Route element={<TournamentPageLayout />}>
+                    <Route path="tournament" element={<Tournament />} />
+                  </Route>
                 </Route>
-                <Route element={<TournamentPageLayout />}>
-                  <Route path="tournament" element={<Tournament />} />
-                </Route>
+                <Route path="*" element={<NotFound />} />
               </Route>
-              <Route path="*" element={<NotFound />} />
-            </Route>
-          </Routes>
-        </EvaluationProvider>
-      </TournamentProvider>
+            </Routes>
+          </EvaluationProvider>
+        </TournamentProvider>
+      </WebSocketContextProvider>
     </IntelContextProvider>
   </AuthContextProvider>
 );
