@@ -39,7 +39,7 @@ const Menu = () => {
               to="/mat/start-game"
               onClick={handleNewGameSelection}
             >
-              <i className="bi bi-geo-fill" /> Você vs Bot{" "}
+              <i className="bi bi-geo-fill" /> Partida Única{" "}
             </Link>
 
             <Link className="accordion-link" to="/simulate-bots">

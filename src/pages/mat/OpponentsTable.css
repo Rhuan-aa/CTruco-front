@@ -1,0 +1,22 @@
+.opponents-table .tr {
+  border-radius: 10px;
+}
+
+.opponents-table .selected {
+  background-color: #014e0180;
+}
+
+.opponents-table .tr:hover:not(.selected) {
+  background-color: #c6c6c6bf;
+}
+
+.opponents-table .tr a:hover {
+  color: #000;
+}
+
+.opponents-table a {
+  color: #000;
+}
+
+
+

@@ -7,7 +7,6 @@ const useGetRemoteBotByName = () => {
     try {
       const url = `/api/v1/remote-bots/${botName}`;
       const response = await axiosPrivate.get(url);
-      // console.log(response.data);
       return response.data;
     } catch (error) {
       console.log(error.response.headers.authorization);

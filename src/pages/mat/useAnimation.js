@@ -12,7 +12,7 @@ const useAnimation = () => {
 
     const { auth: { uuid, username } } = useAuth()
 
-    const { intel, intel: { last: initialIntel, opponentName }, setIntel } = useIntel()
+    const { intel, intel: { last: initialIntel }, setIntel } = useIntel()
 
     const deleteConcludedGame = useDeleteGame()
 
@@ -172,7 +172,7 @@ const useAnimation = () => {
         useAnimation,
         vira, message, rounds, handPoints,
         username, playerHand, playerCard, playerScore,
-        opponentName, opponentHand, opponentCard, opponentScore,
+        opponentName: opponent.username, opponentHand, opponentCard, opponentScore,
         raiseDisabled, acceptDisabled, quitDisabled, raiseLabel, quitLabel
     }
 }
