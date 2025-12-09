@@ -1,5 +1,7 @@
-import { axiosPrivate } from "../../api/axios";
+import useAxiosPrivate from "../../hooks/api/useAxiosPrivate";
+
 const useTopWinners = () => {
+  const axiosPrivate = useAxiosPrivate();
   const findTopWinners = async () => {
     try {
       const url = `/api/v1/users/top-winners`;

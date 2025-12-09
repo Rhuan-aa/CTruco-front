@@ -13,7 +13,6 @@ const RankBots = () => {
 
   const updateRank = async () => {
     let payload = await getFromDB();
-    // console.log(payload);
     setNumberOfGames(payload.numberOfGames);
     if (payload.rank.length > 0) {
       setRank(payload.rank);
