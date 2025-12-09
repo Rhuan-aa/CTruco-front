@@ -1,17 +1,22 @@
 import { useState } from 'react'
 import { axiosPrivate } from '../../api/axios'
 import useAuth from '../context/useAuth'
+import useWebSocket from '../context/useWebSocket'
+import useReceiveInvite from './useReceiveInvite'
 
 const useSignIn = () => {
     const [success, setSuccess] = useState(false)
     const [error, setError] = useState()
-    const { setAuth } = useAuth()
+    const { setAuth } = useAuth();
+    const { subscribe } = useWebSocket();
+    const receiveInvite = useReceiveInvite();
 
     const signIn = async (payload) => {
         try {
             setError(null)
             const { headers: { authorization: token }, data: { uuid } } = await axiosPrivate.post(`/login`, payload)
             setAuth({ token, uuid, username: payload.username })
+            subscribe(`/queue/invite/${uuid}`, receiveInvite);
             setSuccess(true)
         } catch (error) {
             console.log(error.message)
