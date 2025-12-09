@@ -58,12 +58,14 @@ const TopWinners = () => {
               </thead>
               <tbody className="default-tbody">
                 {playersRank &&
-                  Object.entries(playersRank).map(([player, score]) => (
-                    <tr key={player}>
-                      <td className="default-td">{player}</td>
-                      <td className="default-td">{score}</td>
-                    </tr>
-                  ))}
+                  Object.entries(playersRank)
+                    .sort((a, b) => b[1] - a[1])
+                    .map(([player, score]) => (
+                      <tr key={player}>
+                        <td className="default-td">{player}</td>
+                        <td className="default-td">{score}</td>
+                      </tr>
+                    ))}
               </tbody>
             </table>
           </div>
