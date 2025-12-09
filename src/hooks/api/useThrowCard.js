@@ -17,7 +17,6 @@ const useThrowCard = () => {
                 card: card, 
                 timestamp: timestamp 
             };
-            console.log(body)
             sendMessage(destination, body);
         }
         catch (error) {
