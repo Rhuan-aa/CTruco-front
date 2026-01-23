@@ -4,7 +4,7 @@ const useTopWinners = () => {
   const axiosPrivate = useAxiosPrivate();
   const findTopWinners = async () => {
     try {
-      const url = `/api/v1/users/top-winners`;
+      const url = `/api/v1/reports/top-winners/5`;
       const response = await axiosPrivate.get(url);
       return response.data;
     } catch (error) {
