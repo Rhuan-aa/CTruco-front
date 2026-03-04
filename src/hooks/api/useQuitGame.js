@@ -1,23 +1,23 @@
+import useAuth from '../context/useAuth'
 import useIntel from '../context/useIntel'
 import useWebSocket from '../context/useWebSocket';
 
-const useDeleteGame = () => {
+const useQuitGame = () => {
+    const { auth: { uuid } } = useAuth()
     const { intel } = useIntel()
     const { sendMessage } = useWebSocket();
 
-    const deleteConcludedGame = async () => {
+    const QuitGame = async () => {
         try {
-            const game = intel.last;
-            const gameId = game.gameId
-            const loserUuid = game.players.find(p => p.uuid !== intel.last.gameWinner).uuid;
+            const gameId = intel.last.gameId;
             const destination = `/api/v2/games/${gameId}/quit`
-            sendMessage(destination, loserUuid)
+            sendMessage(destination, uuid)
         }
         catch (error) {
             console.log(error.response.headers.authorization)
         }
     }
-    return deleteConcludedGame
+    return QuitGame
 }
 
-export default useDeleteGame
+export default useQuitGame

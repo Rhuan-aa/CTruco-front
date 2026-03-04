@@ -1,10 +1,10 @@
 import useDecidePoints from '../../../hooks/api/useDecidePoints'
-import useDeleteGame from '../../../hooks/api/useDeleteGame'
+import useQuitGame from '../../../hooks/api/useQuitGame'
 import './Commands.css'
 
 const Commands = ({ raiseDisabled, raiseLabel, acceptDisabled, quitDisabled, quitLabel }) => {
     const decideTo = useDecidePoints()
-    const deleteConcludedGame = useDeleteGame()
+    const deleteConcludedGame = useQuitGame()
 
     const action = {
         raise: 'raised-points',
