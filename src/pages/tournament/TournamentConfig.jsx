@@ -5,151 +5,143 @@ import "./TournamentConfig.css";
 import useGetBotNames from "../../hooks/api/useGetBotNames";
 import useTournamentStatus from "../context/useTournamentStatus";
 import useCreateTournament from "./useCreateTournament";
-import useGetTournament from "./useGetTournament";
 import { useNavigate } from "react-router-dom";
 
 const TournamentConfig = () => {
   const [l1Bots, setL1Bots] = useState([]);
-  const [l2Bots, setL2Bots] = useState([]);
+  const [l2Bots, setL2Bots] = useState([]); 
+  
+  const [selectedL1, setSelectedL1] = useState([]);
+  const [selectedL2, setSelectedL2] = useState([]);
+
   const {
     championship,
     setChampionship,
-    finalMatchTimes,
     setFinalMatchTimes,
     times,
     setTimes,
     setTitle,
   } = useTournamentStatus();
+  
   const fetchBotNames = useGetBotNames();
   const createTournament = useCreateTournament();
   const navigate = useNavigate();
 
-  const [tranferedFromL1, setTranferedFromL1] = useState([]);
-  const [tranferedFromL2, setTranferedFromL2] = useState([]);
-
-  const updateBotsList = async () => {
-    const response = await fetchBotNames();
-    const data = await response.data.sort();
-    setL1Bots(data);
-  };
-
-  const handleLoading = () => {
-    if (championship) {
-      navigate("/tournament", {});
-    }
-    updateBotsList();
-  };
-
   useEffect(() => {
+    const loadBots = async () => {
+        const response = await fetchBotNames();
+        const data = await response.data.sort();
+        setL1Bots(data);
+    };
+    
+    if (championship) navigate("/tournament", {});
+    
     setTimes(31);
     setFinalMatchTimes(31);
     setTitle("");
+    loadBots();
   }, []);
-  useEffect(() => {
-    handleLoading();
-  }, [championship]);
 
-  useEffect(() => {
-    let botsList2 = [...l2Bots];
-    tranferedFromL1.forEach((bot) => botsList2.push(bot));
-    setL2Bots(botsList2.sort());
-  }, [tranferedFromL1]);
+  const moveRight = () => {
+    if (selectedL1.length === 0) return;
+    
+    const newL2 = [...l2Bots, ...selectedL1].sort();
+    const newL1 = l1Bots.filter(bot => !selectedL1.includes(bot)).sort();
+    
+    setL1Bots(newL1);
+    setL2Bots(newL2);
+    setSelectedL1([]);
+  };
 
-  useEffect(() => {
-    let botsList1 = [...l1Bots];
-    tranferedFromL2.forEach((bot) => botsList1.push(bot));
-    setL1Bots(botsList1.sort());
-  }, [tranferedFromL2]);
+  const moveLeft = () => {
+    if (selectedL2.length === 0) return;
 
-  const createCamp = async (bots, times, finalMatchTimes) => {
-    let camp = await createTournament(bots, times, finalMatchTimes);
-    console.log(camp);
+    const newL1 = [...l1Bots, ...selectedL2].sort();
+    const newL2 = l2Bots.filter(bot => !selectedL2.includes(bot)).sort();
+
+    setL1Bots(newL1);
+    setL2Bots(newL2);
+    setSelectedL2([]); 
+  };
+
+  const createCamp = async () => {
+    let camp = await createTournament(l2Bots, times, 31); 
     setChampionship(camp);
-
     navigate("/tournament");
   };
 
   return (
     <main className="tournament-config">
-      <section>
-        <form>
-          <TransferListFragment
-            content={l1Bots}
-            transferButtonArrowDirection="right"
-            className={"l1"}
-            setTransferedContent={setTranferedFromL1}
-          ></TransferListFragment>
+      <section className="config-container">
+        
+        <div className="column-list">
+             <label>Disponíveis</label>
+             <TransferListFragment
+                content={l1Bots}
+                selectedItems={selectedL1}
+                setSelectedItems={setSelectedL1}
+             />
+        </div>
 
-          <TransferListFragment
-            content={l2Bots}
-            transferButtonArrowDirection="left"
-            className={"l2"}
-            setTransferedContent={setTranferedFromL2}
-          ></TransferListFragment>
+        <div className="column-center">
+            
+            <div className="transfer-buttons">
+                <button 
+                    className="btn btn-dark" 
+                    onClick={moveRight} 
+                    disabled={selectedL1.length === 0}
+                    title="Mover para o Torneio"
+                >
+                    Mover &gt;
+                </button>
+                <button 
+                    className="btn btn-dark" 
+                    onClick={moveLeft} 
+                    disabled={selectedL2.length === 0}
+                    title="Remover do Torneio"
+                >
+                    &lt; Voltar
+                </button>
+            </div>
 
-          <div id="lower-container">
             <ChakraProvider>
-              <label htmlFor="input-tournament-title">Título do torneio</label>
-              <Input
-                type="text"
-                onChange={(e) => {
-                  setTitle(e.target.value);
-                }}
-                id="input-tournament-title"
-                name="input-tournament-title"
-              />
-              <label htmlFor="nbr-simu">Número de simulações</label>
-              <Input
-                type="number"
-                onChange={(e) => {
-                  let numberOfSimulations = e.target.value;
-                  if (numberOfSimulations > 5000) {
-                    setTimes(6000);
-                  } else if (numberOfSimulations <= 0) {
-                    setTimes(1);
-                  } else setTimes(numberOfSimulations);
-                }}
-                id="nbr-simu"
-                name="nbr-simu"
-              />
-              <label htmlFor="nbr-simu">Final e de Terceiro Lugar</label>
-              <Input
-                type="number"
-                onChange={(e) => {
-                  let numberOfSimulations = e.target.value;
-                  if (numberOfSimulations > 5000) {
-                    setFinalMatchTimes(5000);
-                  } else if (numberOfSimulations <= 0) {
-                    setFinalMatchTimes(1);
-                  } else setFinalMatchTimes(numberOfSimulations);
-                }}
-                id="nbr-simu-special-matches"
-                name="nbr-simu-special-matches"
-              />
+                <div className="form-inputs">
+                    <label>Título do torneio</label>
+                    <Input onChange={(e) => setTitle(e.target.value)} size="sm" />
+                    
+                    <label>Simulações</label>
+                    <Input 
+                        type="number" 
+                        onChange={(e) => setTimes(e.target.value)} 
+                        placeholder="31" 
+                        size="sm"
+                    />
+                </div>
             </ChakraProvider>
 
-            <div id="create-camp-btn">
-              <p
-                style={{ color: "red", fontSize: "12px", margin: "0px" }}
-                hidden={l2Bots.length === 8 || l2Bots.length === 16}
-              >
-                Devem ser selecionados 8 ou 16
-              </p>
-
-              <button
-                type="submit"
-                className="btn btn-dark"
-                onClick={(e) => {
-                  e.preventDefault();
-                  createCamp(l2Bots, times, finalMatchTimes);
-                }}
-                disabled={l2Bots.length !== 8 && l2Bots.length !== 16}
-              >
-                Começar Torneio
-              </button>
+            <div className="submit-area">
+                <p style={{ color: "red", fontSize: "12px" }} hidden={l2Bots.length === 8 || l2Bots.length === 16}>
+                    Necessário 8 ou 16 bots
+                </p>
+                <button
+                    className="btn btn-success"
+                    onClick={(e) => { e.preventDefault(); createCamp(); }}
+                    disabled={l2Bots.length !== 8 && l2Bots.length !== 16}
+                >
+                    Começar Torneio
+                </button>
             </div>
-          </div>
-        </form>
+        </div>
+
+        <div className="column-list">
+            <label>Participantes</label>
+            <TransferListFragment
+                content={l2Bots}
+                selectedItems={selectedL2}
+                setSelectedItems={setSelectedL2}
+            />
+        </div>
+
       </section>
     </main>
   );

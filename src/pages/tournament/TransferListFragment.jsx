@@ -10,126 +10,85 @@ import "./TransferListFragment.css";
 
 const TransferListFragment = ({
   content,
-  transferButtonArrowDirection,
-  className,
-  setTransferedContent,
+  selectedItems,      
+  setSelectedItems,   
 }) => {
   const [visibleContent, setVisibleContent] = useState(content);
-  const [selectedToTransfer, setSelectedToTransfer] = useState([]);
   const [inputContent, setInputContent] = useState("");
-  const [isAllSelected, setIsAllSelected] = useState(false);
 
   useEffect(() => {
     setVisibleContent(content);
+    if(inputContent !== "") handleInputChange(inputContent);
   }, [content]);
 
-  useEffect(() => {
-    if (inputContent === "") {
-      setVisibleContent(content);
-    } else {
-      handleInputChange(inputContent);
-    }
-  }, [inputContent]);
-
-  const handleTransfer = () => {
-    setTransferedContent(selectedToTransfer.sort());
-    removeTranferedBotsFromContent();
-    setSelectedToTransfer([]);
-    if (isAllSelected) {
-      setIsAllSelected(!isAllSelected);
-    }
-  };
-
   const handleInputChange = (name) => {
+    setInputContent(name);
     const newBotsList = content.filter((botName) =>
       botName.toLowerCase().includes(name.toLowerCase())
     );
     setVisibleContent(newBotsList);
   };
 
-  const removeTranferedBotsFromContent = () => {
-    selectedToTransfer.forEach((bot) => {
-      let index = content.findIndex((b) => b === bot);
-      if (index > -1) {
-        content.splice(index, 1);
-      }
-    });
-  };
-
   const handleCheckboxChange = (bot) => {
-    let bots = [...selectedToTransfer];
-
-    if (bots.includes(bot)) {
-      let index = bots.findIndex((b) => b === bot);
-
-      if (index > -1) {
-        bots.splice(index, 1);
-      }
+    let newSelection = [...selectedItems];
+    if (newSelection.includes(bot)) {
+      newSelection = newSelection.filter((b) => b !== bot);
     } else {
-      bots.push(bot);
+      newSelection.push(bot);
     }
-    setIsAllSelected(false);
-    setSelectedToTransfer(bots);
+    setSelectedItems(newSelection);
   };
 
   const toggleSelectAll = () => {
-    if (isAllSelected) {
-      setSelectedToTransfer([]);
+    if (selectedItems.length === visibleContent.length && visibleContent.length > 0) {
+      setSelectedItems([]);
     } else {
-      setSelectedToTransfer([...content]);
+      setSelectedItems([...visibleContent]);
     }
-    setIsAllSelected(!isAllSelected);
   };
 
+  const isAllSelected = visibleContent.length > 0 && selectedItems.length === visibleContent.length;
+
   return (
-    <>
-      <ChakraProvider>
-        <div className="transfer-list-fragment">
-          <p style={{ margin: "0px" }}>Número de bots: {content.length}</p>
-          <Input
+    <ChakraProvider>
+      <div className="transfer-list-fragment">
+        <div className="list-header">
+            <p>Total: {content.length}</p>
+            <Input
             className="bot-filter"
-            onChange={(e) => {
-              setInputContent(e.target.value);
-            }}
-            placeholder="Busque pelo nome"
-          ></Input>
-          <button
+            onChange={(e) => handleInputChange(e.target.value)}
+            value={inputContent}
+            placeholder="Buscar..."
+            size="sm"
+            />
+            <button
             type="button"
             className="btn btn-dark select-all"
             onClick={(e) => {
-              e.preventDefault();
-              toggleSelectAll();
+                e.preventDefault();
+                toggleSelectAll();
             }}
-          >
-            Selecionar Todos
-          </button>
-          <div className="list-limiter">
-            <List paddingLeft={"0px"} paddingRight={"15px"} spacing={3}>
-              {visibleContent.map((bot) => (
-                <ListItem key={bot}>
-                  <Checkbox
-                    onChange={() => handleCheckboxChange(bot)}
-                    isChecked={selectedToTransfer.includes(bot)}
-                  >
-                    {bot}
-                  </Checkbox>
-                </ListItem>
-              ))}
-            </List>
-          </div>
+            >
+            {isAllSelected ? "Desmarcar Todos" : "Selecionar Todos"}
+            </button>
         </div>
-        <button
-          className={"btn btn-dark transfer-button " + className}
-          onClick={(e) => {
-            e.preventDefault();
-            handleTransfer();
-            setInputContent("");
-          }}
-        >
-          <i className={"bi bi-arrow-" + transferButtonArrowDirection}></i>
-        </button>
-      </ChakraProvider>
-    </>
+
+        <div className="list-limiter">
+          <List spacing={2}>
+            {visibleContent.map((bot) => (
+              <ListItem key={bot}>
+                <Checkbox
+                  onChange={() => handleCheckboxChange(bot)}
+                  isChecked={selectedItems.includes(bot)}
+                >
+                  {bot}
+                </Checkbox>
+              </ListItem>
+            ))}
+          </List>
+        </div>
+      </div>
+    </ChakraProvider>
   );
 };
 
