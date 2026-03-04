@@ -1,95 +1,102 @@
 #evaluate-bot {
   display: flex;
-  height: 100%;
-  background-color: var(--mat-bg-color);
+  height: calc(100vh - 140px);
+  width: 100%;
+  background-color: var(--mat-bg-color, #f0f0f0);
   justify-content: center;
   align-items: center;
+  overflow: hidden;
+  padding: 10px;
+  box-sizing: border-box;
 }
 
 #evaluate-bot section {
-  box-shadow: 0px 0px 8px 5px rgba(0, 0, 0, 0.4);
-  width: 400px;
   background-color: white;
-  padding: 30px;
-  border-radius: 5px;
+  box-shadow: 0px 4px 12px rgba(0, 0, 0, 0.15);
+  border-radius: 8px;
+  padding: 25px;
+  width: 100%;
+  max-width: 450px;
+  height: 100%;
+  max-height: 700px;
   display: flex;
   flex-direction: column;
+}
+
+.section-header p {
+  font-weight: bold;
+  font-size: 1.25rem;
+  margin-bottom: 15px;
+  text-align: center;
 }
 
 .section-content {
   display: flex;
   flex-direction: column;
   gap: 10px;
-}
-
-.section-content .spinner {
-  margin-top: 20px;
-}
-
-#evaluate-result {
-  display: grid;
-  align-items: center;
-  grid-template-columns: 1fr 1fr;
-  grid-template-rows: auto auto auto auto;
-  column-gap: 20px;
-}
-
-#evaluate-result div:nth-child(even) {
-  background-color: #014e0180;
-}
-
-#evaluate-result p {
-  margin: 0px;
-  padding: 4px 0px;
-}
-
-#evaluate-result .computing-time {
-  display: grid;
-  grid-template-columns: 1fr 1fr;
-  grid-row: 1;
-  grid-column: 1/3;
-}
-
-#evaluate-result .defeated-opponents {
-  display: grid;
-  grid-template-columns: 1fr 1fr;
-  grid-row: 2;
-  grid-column: 1/3;
-}
-
-#evaluate-result .victories {
-  display: grid;
-  grid-template-columns: 1fr 1fr;
-  grid-row: 3;
-  grid-column: 1/3;
-}
-
-#evaluate-result .win-rate {
-  display: grid;
-  grid-template-columns: 1fr 1fr;
-  grid-row: 4;
-  grid-column: 1/3;
-}
-
-#evaluate-result .percentile {
-  display: grid;
-  grid-template-columns: 1fr 1fr;
-  grid-row: 5;
-  grid-column: 1/3;
-}
-#evaluate-result button {
-  grid-column: 1 / 3;
-  margin-top: 10px;
-}
-
-.evaluate-table-limiter {
-  height: 300px;
-  padding-right: 20px;
-  overflow: auto;
+  flex: 1;
+  overflow: hidden;
+  min-height: 0;
 }
 
 .selected-bot-container {
-  display: grid;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  background-color: #f7fafc;
+  padding: 10px;
+  border-radius: 5px;
+  border: 1px solid #e2e8f0;
+  flex-shrink: 0;
+}
+
+.section-content .spinner {
+  align-self: center;
+  margin: auto;
+}
+
+.filter {
+  flex-shrink: 0;
+}
+
+.evaluate-table-limiter {
+  flex: 1;
+  overflow-y: auto;
+  border: 1px solid #e2e8f0;
+  border-radius: 4px;
+  margin: 5px 0;
+  padding: 5px;
+  min-height: 100px;
+}
+
+#evaluate-result {
+  display: flex;
+  flex-direction: column;
+  border: 1px solid #e2e8f0;
+  border-radius: 5px;
+  overflow-y: auto;
+  flex: 1;
+}
+
+#evaluate-result > div:not(button) {
+  display: flex;
+  justify-content: space-between;
+  padding: 10px;
+  font-size: 0.9rem;
+}
+
+#evaluate-result > div:nth-child(even) {
+  background-color: #f0fff4;
+}
+
+#evaluate-result > div > p:last-child {
+  font-weight: bold;
+  color: #2f855a;
+}
+
+#evaluate-bot button {
   width: 100%;
-  grid-template-columns: 130px auto;
+  margin-top: auto;
+  padding: 10px;
+  flex-shrink: 0;
 }
