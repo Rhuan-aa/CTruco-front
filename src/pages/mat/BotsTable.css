@@ -1,5 +1,12 @@
+.bots-table {
+  width: 100%;
+  max-width: 100%;
+  overflow-x: hidden;
+}
+
 .bots-table .tr {
   border-radius: 10px;
+  cursor: pointer;
 }
 
 .bots-table .selected {
@@ -15,8 +22,43 @@
 }
 
 .bots-table a {
+  display: block;
+  width: 100%;
+  color: #000;
+  text-decoration: none;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.bots-table a:hover {
   color: #000;
 }
 
+.bots-table thead {
+  display: none;
+}
 
+.bots-table td {
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+
+  max-width: 100%;
+  padding: 8px 12px;
+}
+
+@media (max-width: 1200px) {
+  .bots-table td {
+    font-size: 14px;
+  }
+}
+
+
+@media (max-width: 900px) {
+  .bots-table td {
+    font-size: 13px;
+    padding: 6px 10px;
+  }
+}
 
