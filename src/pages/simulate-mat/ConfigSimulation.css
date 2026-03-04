@@ -3,6 +3,7 @@
   display: flex;
   align-items: center;
   justify-content: center;
+  padding: 16px;
 }
 
 .config-simulation section {
@@ -10,24 +11,28 @@
   flex-direction: column;
   box-shadow: 0px 0px 8px 5px rgba(0, 0, 0, 0.4);
   background-color: white;
+  width: 100%;
+  max-width: 900px;
   padding: 30px;
-  border-radius: 5px;
+  border-radius: 8px;
 }
 
 .config-simulation section form {
-  margin: 10px 0px 10px 0px;
+  margin: 10px 0;
   display: grid;
-  align-content: end;
-  gap: 10px;
-  grid-template-rows: auto auto auto;
-  grid-template-columns: 200px 350px 200px;
+  gap: 12px;
+  grid-template-columns:
+    minmax(180px, 1fr)
+    minmax(300px, 2fr)
+    minmax(180px, 1fr);
   justify-items: center;
+  align-items: start;
 }
 
+
 .config-simulation form .bot-filter {
-  width: 200px;
-  display: flex;
-  justify-content: center;
+  width: 100%;
+  max-width: 200px;
 }
 
 .config-simulation form .others {
@@ -48,7 +53,8 @@
 }
 
 .config-simulation form .p1-name {
-  min-width: 200px;
+  width: 100%;
+  max-width: 200px;
   background-color: var(--bs-body-color);
   border-radius: 15px;
   display: flex;
@@ -65,7 +71,8 @@
 }
 
 .config-simulation form .p2-name {
-  min-width: 200px;
+  width: 100%;
+  max-width: 200px;
   background-color: var(--bs-body-color);
   border-radius: 15px;
   display: flex;
@@ -82,11 +89,12 @@
 }
 
 .config-simulation form .middle-container {
-  display: inline-grid;
+  display: flex;
   flex-direction: column;
-  grid-row: 3;
-  grid-column: 2;
+  align-items: center;
+  gap: 12px;
 }
+
 
 .config-simulation form .middle-container img {
   height: 80%;
@@ -96,9 +104,9 @@
 }
 
 .config-simulation form .middle-container i {
-  font-size: 7rem;
-  align-self: center;
+  font-size: 5rem;
 }
+
 
 .config-simulation form .middle-container button {
   justify-self: center;
@@ -108,15 +116,19 @@
 .config-simulation form .table1 {
   grid-row: 3;
   grid-column: 1;
+  width: 100%;
+  max-width: 250px;
   height: 250px;
-  overflow: auto;
+  overflow-y: auto;
 }
 
 .config-simulation form .table2 {
   grid-row: 3;
   grid-column: 3;
+  width: 100%;
+  max-width: 250px;
   height: 250px;
-  overflow: auto;
+  overflow-y: auto;
 }
 
 .config-simulation form .others {
@@ -160,7 +172,6 @@
 }
 
 #simulation-results .bot1-name {
-  /* width: 100%; */
   font-size: 20px;
   justify-self: center;
   align-self: center;
@@ -169,7 +180,6 @@
 }
 
 #simulation-results .bot2-name {
-  /* width: 100%; */
   font-size: 20px;
   justify-self: center;
   align-self: center;
