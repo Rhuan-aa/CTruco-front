@@ -1,7 +1,4 @@
 import { React, useEffect, useState } from "react";
-import Header from "../../components/templates/Header";
-import Menu from "../../components/templates/Menu";
-import Footer from "../../components/templates/Footer";
 import { ChakraProvider, Spinner } from "@chakra-ui/react";
 import "../home/Home.css";
 import "./UserMatchHistory.css";
@@ -14,7 +11,6 @@ const UserMatchHistory = () => {
 
   const updateUserHistory = async () => {
     let response = await getHistory();
-    // console.log(response);
     setUserHistory(response);
   };
 
@@ -23,13 +19,9 @@ const UserMatchHistory = () => {
   }, []);
 
   const dateHandler = (originalDate) => {
-    // original format YYYY-MM-DD HH:SS
-
     const [date, time] = originalDate.split(" ");
     const [year, month, day] = date.split("-");
     return `${day}/${month}/${year.slice(2)} ${time}`;
-
-    // treated format DD-MM-YY HH:SS
   };
 
   return (
@@ -84,8 +76,8 @@ const UserMatchHistory = () => {
                       {dateHandler(match.endingDate)}
                     </td>
                     <td className="default-td">
-                      {match.matchDuration > 60
-                        ? `${match.matchDuration / 60}min`
+                      {match.matchDuration >= 60
+                        ? `${Math.floor(match.matchDuration / 60)}min ${match.matchDuration % 60}sec`
                         : `${match.matchDuration}sec`}
                     </td>
                   </tr>
