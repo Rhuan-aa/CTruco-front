@@ -1,5 +1,6 @@
 import { useState, createContext, useEffect, useRef, useCallback } from "react";
 import { Client } from "@stomp/stompjs";
+import { BROKER_URL } from "../api/broker";
 
 const WebSocketContext = createContext({
     client: null,
@@ -20,7 +21,7 @@ export const WebSocketContextProvider = ({ children }) => {
         }
 
         const newClient = new Client({
-            brokerURL: "ws://localhost:8080/ws-handshake",
+            brokerURL: BROKER_URL,
             onConnect: () => {
                 setIsConnected(true);
             },
@@ -40,7 +41,7 @@ export const WebSocketContextProvider = ({ children }) => {
 
         newClient.activate();
         clientRef.current = newClient;
-        const currentSubscriptions = subscriptionsRef.current
+        const currentSubscriptions = subscriptionsRef.current;
 
         return () => {
             if (clientRef.current) {
@@ -63,11 +64,10 @@ export const WebSocketContextProvider = ({ children }) => {
 
             const newSubscription = clientRef.current.subscribe(topic, (message) => {
                 callback(message);
-
             });
             subscriptionsRef.current.set(topic, newSubscription);
         },
-        [isConnected]
+        [isConnected],
     );
 
     const unsubscribe = useCallback((topic) => {
@@ -87,7 +87,7 @@ export const WebSocketContextProvider = ({ children }) => {
         } else {
             console.warn(
                 "Cliente STOMP não está conectado para enviar:",
-                destination
+                destination,
             );
         }
     };
