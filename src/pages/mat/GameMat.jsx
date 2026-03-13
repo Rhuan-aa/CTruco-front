@@ -10,6 +10,7 @@ import "./GameMat.css";
 
 const Mat = () => {
   const {
+    isCurrentPlayer,
     vira,
     message,
     rounds,
@@ -32,10 +33,10 @@ const Mat = () => {
   return (
     <main className="mat-area">
       <div className="mat">
-        <div className="opponent-score">
+        <div className={`opponent-score ${!isCurrentPlayer ? 'active-turn' : ''}`}>
           <Score player={opponentName} score={opponentScore} position="top" />
         </div>
-        <div className="player-score">
+        <div className={`player-score ${isCurrentPlayer ? 'active-turn' : ''}`}>
           <Score player={username} score={playerScore} position="botton" />
         </div>
         <OpponentHand cards={opponentHand} />

@@ -48,3 +48,20 @@ div.commands {
 div.message {
     grid-area: message;
 }
+
+.active-turn {
+    filter: drop-shadow(0 0 10px rgba(255, 255, 255, 0.8));
+    border-radius: 10px;
+    transition: filter 0.3s ease-in-out;
+    background-color: rgba(255, 255, 255, 0.1);
+}
+
+@keyframes pulse-turn {
+    0% { opacity: 0.6; }
+    50% { opacity: 1; }
+    100% { opacity: 0.6; }
+}
+
+.player-score.active-turn, .opponent-score.active-turn {
+    animation: pulse-turn 2s infinite;
+}

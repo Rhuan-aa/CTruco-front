@@ -26,6 +26,8 @@ const useAnimation = () => {
     let player = getPlayer(initialIntel)
     let opponent = getOpponent(initialIntel)
 
+    const [isCurrentPlayer, setIsCurrentPlayer] = useState(initialIntel.currentPlayerUuid === uuid);
+
     const [vira, setVira] = useState(toCardString(initialIntel.vira))
     const [message, setMessage] = useState('Clique na carta para jogar. Segure o alt e clique na carta para ocultar.')
     const [rounds, setRounds] = useState([])
@@ -100,6 +102,7 @@ const useAnimation = () => {
         }
         await delay(DELAY_UNIT * 3)
         updateButtons(currentIntel)
+        setIsCurrentPlayer(currentIntel.currentPlayerUuid === uuid)
         await delay(DELAY_UNIT * 2)
         updateMessage(currentIntel)
 
@@ -169,7 +172,7 @@ const useAnimation = () => {
     }
 
     return {
-        useAnimation,
+        useAnimation, isCurrentPlayer,
         vira, message, rounds, handPoints,
         username, playerHand, playerCard, playerScore,
         opponentName: opponent.username, opponentHand, opponentCard, opponentScore,
