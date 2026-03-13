@@ -21,7 +21,10 @@ const UserMatchHistory = () => {
   const dateHandler = (originalDate) => {
     const [date, time] = originalDate.split(" ");
     const [year, month, day] = date.split("-");
-    return `${day}/${month}/${year.slice(2)} ${time}`;
+    const formattedDate = `${day}/${month}/${year.slice(2)}`;
+    const [minutes, hours] = time.split(":");
+    const formattedTime = `${hours}:${minutes}`;
+    return `${formattedDate} ${formattedTime}`;
   };
 
   return (
