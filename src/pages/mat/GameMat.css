@@ -75,3 +75,22 @@ div.message {
 .active-turn h1, .active-turn h2 {
     animation: pulse-text 2s infinite;
 }
+
+div.player-hand {
+    grid-area: player-cards;
+    transition: filter 0.3s ease; 
+}
+
+.waiting-turn div.player-hand {
+    filter: brightness(0.45); 
+    pointer-events: none; 
+}
+
+div.opponent-hand {
+    grid-area: opponent-cards;
+    transition: filter 0.3s ease;
+}
+
+.mat:not(.waiting-turn) div.opponent-hand {
+    filter: brightness(0.6); 
+}

@@ -32,7 +32,8 @@ const Mat = () => {
 
   return (
     <main className="mat-area">
-      <div className="mat">
+      <div className={`mat ${!isCurrentPlayer ? 'waiting-turn' : ''}`}>
+        
         <div className={`opponent-score ${!isCurrentPlayer ? 'active-turn' : ''}`}>
           <Score player={opponentName} score={opponentScore} position="top" />
         </div>
