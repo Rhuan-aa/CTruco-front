@@ -34,7 +34,7 @@ const StartGameMat = () => {
     let ranksList = [];
     try {
         const payload = await fetchBotRanks();
-        if (payload && Array.isArray(payload.rank)) {
+        if (payload?.rank && Array.isArray(payload.rank)) {
             ranksList = payload.rank;
         }
     } catch (error) {
@@ -51,6 +51,7 @@ const StartGameMat = () => {
     });
 
     setBotsList(enrichedBots);
+    
     const playerResponse = await fetchOnlinePlayers();
     if (playerResponse) setPlayersList(playerResponse);
   };
