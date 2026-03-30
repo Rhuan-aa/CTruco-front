@@ -14,7 +14,7 @@ const useDeleteGame = () => {
             sendMessage(destination, loserUuid)
         }
         catch (error) {
-            console.log(error.response.headers.authorization)
+            console.error("Erro ao deletar o jogo:", error);
         }
     }
     return deleteConcludedGame
