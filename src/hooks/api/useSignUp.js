@@ -3,29 +3,28 @@ import axios from '../../api/axios'
 
 const useSignUp = () => {
     const [success, setSuccess] = useState(false)
-    const [errors, setErrors] = useState([])
+    const [errors, setErrors] = useState([]);
 
     const signUp = async (payload) => {
+        setSuccess(false);
+        setErrors([]);
+
         try {
-            setErrors([])
             await axios.post(`/register`, payload)
             setSuccess(true)
         } catch (error) {
-            console.log(error.message)
-            if (!error.response) {
-                setErrors('Sistema temporariamente indisponível.')
+            if (error.response?.data?.message) {
+                setErrors([error.response.data.message]);
+            } else if (error.response?.data && typeof error.response.data === 'string') {
+                setErrors([error.response.data]);
+            } else if (error.response?.data?.ErrorDescription) {
+                setErrors([error.response.data.ErrorDescription]);
+            } else {
+                setErrors(["Erro ao tentar comunicar com o servidor."]);
             }
-            if (error.response.status === 409) {
-                const message = error.response.data.message
-                if (message.includes('username'))
-                    setErrors(prevState => ([...prevState, 'O nome de usuário já existe no sistema.']))
-                if (message.includes('email'))
-                    setErrors(prevState => ([...prevState, 'O e-mail já existe no sistema.']))
-                return
-            }
-            else setErrors('Algo deu errado.')
         }
     }
+    
     return [signUp, success, errors]
 }
 
