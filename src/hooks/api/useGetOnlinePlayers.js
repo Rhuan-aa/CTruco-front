@@ -7,7 +7,7 @@ const useGetOnlinePlayers = () => {
 
     const getOnlinePlayers = async () => {
         try {
-            const { data: players } = await axiosPrivate.get(`/api/v2/invites/online-players/${uuid}`);
+            const { data: players } = await axiosPrivate.get(`/api/v1/invites/online-players/${uuid}`);
             return players;
         } catch (error) {
             console.error("Erro ao buscar jogadores online", error);

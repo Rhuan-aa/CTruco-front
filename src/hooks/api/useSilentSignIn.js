@@ -8,7 +8,7 @@ const useSilentSignIn = () => {
     const silentlySignIn = async () => {
         try {
             if (auth?.uuid) return false
-            const response = await axiosPrivate.get('/refresh-token')
+            const response = await axiosPrivate.get('/api/v1/refresh-token')
             const token = response.headers.authorization
             const uuid = response.data.uuid
             const username = response.data.username

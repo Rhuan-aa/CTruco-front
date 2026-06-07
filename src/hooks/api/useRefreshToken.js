@@ -5,14 +5,14 @@ const useRefreshToken = () => {
     const { auth, setAuth } = useAuth()
 
     const refresh = async () => {
-        const { headers: { authorization: accessToken } } = await axiosPrivate.get('/refresh-token')
+        const { headers: { authorization: accessToken } } = await axiosPrivate.get('/api/v1/refresh-token')
         setAuth(prev => ({ ...prev, token: accessToken }))
         return accessToken
     }
 
     const deleteTokens = async () => {
         try {
-            await axiosPrivate.delete('/refresh-token', {headers: {Authorization: auth?.token ? auth?.token : undefined}})
+            await axiosPrivate.delete('/api/v1/refresh-token', {headers: {Authorization: auth?.token ? auth?.token : undefined}})
         } catch (error) {
             console.warn("Sessão já expirada no servidor ou erro ao deslogar.");
         } finally {    

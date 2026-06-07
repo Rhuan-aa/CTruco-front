@@ -10,7 +10,7 @@ const useSignUp = () => {
         setErrors([]);
 
         try {
-            await axios.post(`/register`, payload)
+            await axios.post(`/api/v1/register`, payload)
             setSuccess(true)
         } catch (error) {
             if (error.response?.data?.message) {

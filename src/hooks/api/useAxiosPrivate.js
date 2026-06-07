@@ -24,7 +24,7 @@ const useAxiosPrivate = () => {
             response => response,
             async (error) => {
                 const prevRequest = error?.config
-                const isRequestTokenRequest = prevRequest?.url === '/refresh-token'
+                const isRequestTokenRequest = prevRequest?.url === '/api/v1/refresh-token'
 
                 if (isRequestTokenRequest) {
                     navigate('/login', { state: { from: location }, replace: true })
