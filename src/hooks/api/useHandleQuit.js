@@ -17,7 +17,6 @@ const useHandleQuit = () => {
 
         setIntel(null);
         navigate("/");
-        console.log("saindo do jogo");
     },[unsubscribe, setIntel, navigate])
 
     return handleQuit;
