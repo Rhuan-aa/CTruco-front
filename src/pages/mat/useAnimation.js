@@ -12,32 +12,33 @@ const useAnimation = () => {
 
     const { auth: { uuid, username } } = useAuth()
 
-    const { intel, intel: { last: initialIntel }, setIntel } = useIntel()
+    const { intel, setIntel } = useIntel()
+    const initialIntel = intel?.last
 
     const deleteConcludedGame = useDeleteGame()
 
-    const toCardString = card => card.rank === 'X' ? 'back' : `${card.rank}${card.suit}`
-    const getCardsAsStrings = cards => cards.map(card => toCardString(card))
-    const getPlayer = intel => intel.players.find(aPlayer => aPlayer.uuid === uuid)
-    const getOpponent = intel => intel.players.find(aPlayer => aPlayer.uuid !== uuid)
-    const canPerform = (intel, action) => intel.currentPlayerUuid === uuid && intel.possibleActions.includes(action)
+    const toCardString = card => (!card || card.rank === 'X') ? 'back' : `${card.rank}${card.suit}`
+    const getCardsAsStrings = cards => cards ? cards.map(card => toCardString(card)) : []
+    const getPlayer = intel => intel?.players?.find(aPlayer => aPlayer.uuid === uuid)
+    const getOpponent = intel => intel?.players?.find(aPlayer => aPlayer.uuid !== uuid)
+    const canPerform = (intel, action) => intel?.currentPlayerUuid === uuid && intel?.possibleActions?.includes(action)
     const delay = ms => new Promise(res => setTimeout(res, ms))
 
     let player = getPlayer(initialIntel)
     let opponent = getOpponent(initialIntel)
 
-    const [isCurrentPlayer, setIsCurrentPlayer] = useState(initialIntel.currentPlayerUuid === uuid);
+    const [isCurrentPlayer, setIsCurrentPlayer] = useState(initialIntel?.currentPlayerUuid === uuid);
 
-    const [vira, setVira] = useState(toCardString(initialIntel.vira))
+    const [vira, setVira] = useState(initialIntel ? toCardString(initialIntel.vira) : 'back')
     const [message, setMessage] = useState('Clique na carta para jogar. Segure o alt e clique na carta para ocultar.')
     const [rounds, setRounds] = useState([])
     const [handPoints, setHandPoints] = useState(1)
 
-    const [playerHand, setPlayerHand] = useState(getCardsAsStrings(player.cards))
+    const [playerHand, setPlayerHand] = useState(player ? getCardsAsStrings(player.cards) : [])
     const [playerCard, setPlayerCard] = useState(null)
     const [playerScore, setPlayerScore] = useState(0)
 
-    const [opponentHand, setOpponentHand] = useState(getCardsAsStrings(opponent.cards))
+    const [opponentHand, setOpponentHand] = useState(opponent ? getCardsAsStrings(opponent.cards) : [])
     const [opponentCard, setOpponentCard] = useState(null)
     const [opponentScore, setOpponentScore] = useState(0)
 
@@ -175,7 +176,7 @@ const useAnimation = () => {
         useAnimation, isCurrentPlayer,
         vira, message, rounds, handPoints,
         username, playerHand, playerCard, playerScore,
-        opponentName: opponent.username, opponentHand, opponentCard, opponentScore,
+        opponentName: opponent?.username, opponentHand, opponentCard, opponentScore,
         raiseDisabled, acceptDisabled, quitDisabled, raiseLabel, quitLabel
     }
 }
